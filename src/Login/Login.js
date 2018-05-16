@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, AppRegistry, Button, StyleSheet, View, ActivityIndicator, TextInput, Text } from 'react-native';
 import LoginForm from './LoginForm';
+import NavigationBar from '../shared/NavigationBar';
 
 export default class App extends React.Component {
   
@@ -8,6 +9,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <NavigationBar/>
         <View style={styles.inputContainer}>
           <Text style={styles.title}> Note App</Text>
         </View>
