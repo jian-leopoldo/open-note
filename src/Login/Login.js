@@ -3,7 +3,7 @@ import { Alert, AppRegistry, Button, StyleSheet, View, ActivityIndicator, TextIn
 import LoginForm from './LoginForm';
 import NavigationBar from '../shared/NavigationBar';
 
-export default class App extends React.Component {
+export default class Login extends React.Component {
   
 
   render() {
@@ -15,6 +15,10 @@ export default class App extends React.Component {
         </View>
         <View style={styles.inputContainer}>
           <LoginForm />
+          <Button
+          title="Go to Details"
+          onPress={() => this.props.navigation.navigate('Details')}
+        />
         </View>
       </View>
     );

@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Text, AppRegistry, Button, StyleSheet, View, ActivityIndicator, TextInput } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+
 
 export default class LoginForm extends React.Component {
   
@@ -59,7 +61,7 @@ export default class LoginForm extends React.Component {
           />
           <Button 
             title="Login"  
-            onPress={this.makeRequest}
+            onPress={() => this.props.navigation.navigate('Details')}
             style={styles.btnLogin} 
             color="black"/>
       </View>

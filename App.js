@@ -1,12 +1,13 @@
 import React from 'react';
 import { Alert, AppRegistry, Button, StyleSheet, View, ActivityIndicator } from 'react-native';
 import Login from './src/Login/Login';
+import DetailsScreen from './src/Login/DetailsScreen';
+
+import { createStackNavigator } from 'react-navigation';
+
 export default class App extends React.Component {
-  
   render() {
-    return (
-      <Login />
-    );
+    return <RootStack />;
   }
 }
 
@@ -18,3 +19,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+const RootStack = createStackNavigator(
+  {
+    Home: Login,
+    Details: DetailsScreen,
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
