@@ -5,7 +5,7 @@ import {
   Alert,
   View} from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
+import { FormLabel, FormInput, FormValidationMessage, Button, YellowBox} from 'react-native-elements';
 import * as firebase from "firebase";
 
 export default class FormNote extends React.Component {
@@ -19,6 +19,9 @@ export default class FormNote extends React.Component {
     description: '',
     errorMessage: '',
   };
+
+
+  
 
   setDescription = val => {
     this.setState({
@@ -36,9 +39,9 @@ export default class FormNote extends React.Component {
 
     let userMobilePath = "/user/details";
 
-    // return firebase.database().ref(userMobilePath).set({
-    //     title: this.state.title
-    // })
+    return firebase.database().ref(userMobilePath).set({
+        title: this.state.title
+    })
   }
 
   render() {
