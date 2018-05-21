@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import { Text, AppRegistry, Button, StyleSheet, View, ActivityIndicator, TextInput } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+import { Text, AppRegistry, StyleSheet, View, ActivityIndicator, TextInput, Alert } from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
+import * as firebase from "firebase";
 
 
 export default class LoginForm extends React.Component {
@@ -10,17 +12,32 @@ export default class LoginForm extends React.Component {
     super(props)
   }
   state = {
-    placeName: '',
-    places: [],
-    persons: []
+    email: '',
+    password: '',
+    errorMessage: '',
   };
 
   placeNameChangeHandler = val => {
     this.setState({
-      placeName: val
+      email: val
     });
   };
 
+  setPassword = val => {
+    this.setState({
+      password: val
+    })
+  }
+
+  componentDidMount(){
+    firebase.initializeApp({
+      apiKey: "AIzaSyBwgY75O-efZdcLZfjOF6Y56bU0jR3hUSA",
+      authDomain: "opennote-55807.firebaseapp.com",
+      databaseURL: "https://opennote-55807.firebaseio.com",
+      storageBucket: "opennote-55807.appspot.com"
+    });
+  }
+  
 
   makeRequest = () =>{
     axios.get(`https://jsonplaceholder.typicode.com/users`)
@@ -30,40 +47,39 @@ export default class LoginForm extends React.Component {
         console.log(res.data);
       })
   }
-  
-  placeSubmitHandler = () => {
-    if (this.state.placeName.trim() === ""){
-      return;
+
+  async login(email, pass) {
+    
+    try {
+        await firebase.auth()
+            .signInWithEmailAndPassword(email, pass);
+
+        console.log("Logged In!");
+
+        Actions.details();
+        // Navigate to the Home page
+
+    } catch (error) {
+        console.log(error.toString())
+        Alert.alert("Erro ao realizar login",error.toString());
     }
 
-    this.setState(prevState => {
-      return {
-        places: prevState.places.concat(prevState.placeName)
-      }
-    });
-  };
+}
 
   render() {
 
     return (
       <View style={styles.container}>
-         <Text style={styles.title}> Username</Text>
-         <TextInput
-            style={styles.input}
-            value={this.state.placeName}
-            placeholder='Username'
-            onChangeText={this.placeNameChangeHandler}
-          />
-          <Text style={styles.title}> Password</Text>
-           <TextInput
-            placeholder='Password'
-            style={styles.input}
-          />
-          <Button 
-            title="Login"  
-            onPress={() => this.props.navigation.navigate('Details')}
-            style={styles.btnLogin} 
-            color="black"/>
+        <FormLabel>Name</FormLabel>
+        <FormInput onChangeText={this.placeNameChangeHandler} keyboardType={'email-address'}/>
+        <FormLabel>Password</FormLabel>
+        <FormInput  onChangeText={this.setPassword} secureTextEntry/>
+        <Button 
+          title="Login"  
+          onPress={() => this.login(this.state.email,this.state.password)}
+          //onPress={() => Actions.details()}
+          style={styles.btnLogin}
+          backgroundColor='#42c2f4'/>
       </View>
     );
   }
@@ -86,7 +102,8 @@ const styles = StyleSheet.create({
   },
   btnLogin: {
     height: 40,
-    color: 'white'
+    color: 'white',
+    backgroundColor: '#42c2f4'
   }
 
 });

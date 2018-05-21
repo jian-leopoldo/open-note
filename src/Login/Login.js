@@ -1,7 +1,16 @@
 import React from 'react';
-import { Alert, AppRegistry, Button, StyleSheet, View, ActivityIndicator, TextInput, Text } from 'react-native';
+import { 
+  Alert, 
+  AppRegistry, 
+  Button, 
+  StyleSheet, 
+  View, 
+  ActivityIndicator, 
+  TextInput, 
+  Text } from 'react-native';
 import LoginForm from './LoginForm';
 import NavigationBar from '../shared/NavigationBar';
+import { Actions } from 'react-native-router-flux';
 
 export default class Login extends React.Component {
   
@@ -9,16 +18,11 @@ export default class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <NavigationBar/>
         <View style={styles.inputContainer}>
           <Text style={styles.title}> Note App</Text>
         </View>
         <View style={styles.inputContainer}>
           <LoginForm />
-          <Button
-          title="Go to Details"
-          onPress={() => this.props.navigation.navigate('Details')}
-        />
         </View>
       </View>
     );
