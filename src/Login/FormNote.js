@@ -18,11 +18,9 @@ export default class FormNote extends React.Component {
     title: '',
     description: '',
     errorMessage: '',
+    note: '',
   };
-
-
   
-
   setDescription = val => {
     this.setState({
       description: val
@@ -35,16 +33,35 @@ export default class FormNote extends React.Component {
     })
   }
 
-  saveData() {
+  updateData() {
 
     let userMobilePath = "/user/details";
 
     return firebase.database().ref(userMobilePath).set({
-        title: this.state.title
+        title: this.state.title,
+        description: this.state.description
     })
   }
 
+  saveData() {
+
+    let userMobilePath = "/user/details";
+
+    return firebase.database().ref(userMobilePath).push({
+        title: this.state.title,
+        description: this.state.description
+    })
+  }
+
+  listarDados(){
+    var details = firebase.database().ref("/user/details/title");
+    details.on('value', (snapshot) => {
+      this.setState({note: snapshot.val()});
+    });
+  }
+
   render() {
+    let {note} = this.state;
     return (
       <View style={styles.container}>
         <FormLabel>Título da nota</FormLabel>
@@ -57,6 +74,7 @@ export default class FormNote extends React.Component {
           onPress={() => this.saveData()}
           style={styles.btnLogin}
           backgroundColor='#42c2f4'/>
+        <Text>{note}</Text>
       </View>
     );
   }

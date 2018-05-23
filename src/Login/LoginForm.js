@@ -54,8 +54,6 @@ export default class LoginForm extends React.Component {
         await firebase.auth()
             .signInWithEmailAndPassword(email, pass);
 
-        console.log("Logged In!");
-
         Actions.details();
         // Navigate to the Home page
 
@@ -76,8 +74,8 @@ export default class LoginForm extends React.Component {
         <FormInput  onChangeText={this.setPassword} secureTextEntry/>
         <Button 
           title="Login"  
-          onPress={() => this.login(this.state.email,this.state.password)}
-          //onPress={() => Actions.details()}
+          //onPress={() => this.login(this.state.email,this.state.password)}
+          onPress={() => Actions.details()}
           style={styles.btnLogin}
           backgroundColor='#42c2f4'/>
       </View>
