@@ -12,6 +12,8 @@ import LoginForm from './LoginForm';
 import NavigationBar from '../shared/NavigationBar';
 import { Actions } from 'react-native-router-flux';
 import * as firebase from "firebase";
+import { Avatar, Card} from 'react-native-elements';
+
 
 
 export default class currentUser extends React.Component {
@@ -42,14 +44,26 @@ export default class currentUser extends React.Component {
       message: 'Nenhum usuário logado',
       loadingBar: false
     })
-  }
- 
-  
+  } 
+ }
+
+ logOut(){
+  firebase.auth().signOut().then(function() {
+    Actions.login();
+  }, function(error) {
+    
+  });
  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}> Email: {this.state.email}</Text>
+        <Card
+          title={this.state.email}
+          >
+          <Text style={{marginBottom: 10}}>
+            Email Logado: {this.state.email}
+          </Text>
+        </Card>
       </View>
     );
   }
@@ -57,23 +71,10 @@ export default class currentUser extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
-  },
-  input: {
-    height: 40,
-    width: 250,
-    padding: 4,
-    backgroundColor:'white',
-    marginBottom: 20
-  },
-  title: {
-    color: 'white',
-    fontSize: 20
-  },
-  btnLogin: {
-    height: 40,
-    color: 'white',
-    backgroundColor: '#42c2f4'
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 
 });

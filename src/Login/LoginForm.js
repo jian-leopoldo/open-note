@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Text, AppRegistry, StyleSheet, View, ActivityIndicator, TextInput, Alert } from 'react-native';
+import { Text, CameraRoll, AppRegistry, StyleSheet, View, ActivityIndicator, TextInput, Alert } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
@@ -16,6 +16,9 @@ export default class LoginForm extends React.Component {
     email: '',
     password: '',
     errorMessage: '',
+    btnSpinner: false,
+    iconBtn: {name: 'md-checkmark', type: 'ionicon'},
+    photos: []
   };
 
   placeNameChangeHandler = val => {
@@ -38,6 +41,15 @@ export default class LoginForm extends React.Component {
       storageBucket: "opennote-55807.appspot.com"
     });
   }
+
+  iconBtn(){
+    if (this.state.btnSpinner){
+      return {};
+    }else
+    {
+      return {name: 'md-checkmark', type: 'ionicon'};
+    }
+  }
   
 
   makeRequest = () =>{
@@ -49,8 +61,22 @@ export default class LoginForm extends React.Component {
       })
   }
 
+  loadSpinner(){
+    this.setState({
+      btnSpinner: true,
+      iconBtn: {}
+    })
+  }
+
+  closeSpinner(){
+    this.setState({
+      btnSpinner: false,
+      iconBtn: {name: 'md-checkmark', type: 'ionicon'}
+    })
+  }
+
   async login(email, pass) {
-    
+    this.loadSpinner();
     try {
         await firebase.auth()
             .signInWithEmailAndPassword(email, pass);
@@ -60,6 +86,7 @@ export default class LoginForm extends React.Component {
 
     } catch (error) {
         Alert.alert("Erro ao realizar login",error.toString());
+        this.closeSpinner();
     }
 
 }
@@ -69,16 +96,16 @@ export default class LoginForm extends React.Component {
     return (
       <View style={styles.container}>
         <FormLabel>Name</FormLabel>
-        <FormInput onChangeText={this.placeNameChangeHandler} keyboardType={'email-address'}/>
+        <FormInput underlineColorAndroid={'#42c2f4'} inputstyle={styles.input} onChangeText={this.placeNameChangeHandler} keyboardType={'email-address'}/>
         <FormLabel>Password</FormLabel>
-        <FormInput  onChangeText={this.setPassword} secureTextEntry/>
+        <FormInput underlineColorAndroid={'#42c2f4'} onChangeText={this.setPassword} secureTextEntry/>
         <Button 
-          title="Login" 
-          icon={{name: 'md-checkmark', type: 'ionicon'}}
-          //onPress={() => this.login(this.state.email,this.state.password)}
-          onPress={() => Actions.details()}
+          title="Login"
+          loading={this.state.btnSpinner}
+          icon={this.state.iconBtn}
+          onPress={() => this.login(this.state.email,this.state.password)}
           style={styles.btnLogin}
-          backgroundColor='#42c2f4'/>
+          backgroundColor='#426cb4'/>
       </View>
     );
   }
@@ -86,14 +113,13 @@ export default class LoginForm extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    padding: 20,
   },
   input: {
-    height: 40,
-    width: 250,
     padding: 4,
     backgroundColor:'white',
-    marginBottom: 20
+    marginBottom: 20,
+    color: '#426cb4'
   },
   title: {
     color: 'white',

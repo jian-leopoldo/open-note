@@ -19,6 +19,7 @@ export default class FormNote extends React.Component {
     description: '',
     errorMessage: '',
     note: '',
+    id:''
   };
 
   componentDidMount(){
@@ -39,7 +40,7 @@ export default class FormNote extends React.Component {
 
   updateData() {
 
-    let userMobilePath = "/user/details";
+    let userMobilePath = "/user/details/"+ this.state.id;
 
     return firebase.database().ref(userMobilePath).set({
         title: this.state.title,
@@ -99,11 +100,12 @@ export default class FormNote extends React.Component {
         <FormInput  onChangeText={this.setDescription}/>
         {this.renderErrorMessage()}
         <Button 
-          title="Login"  
+          title="Salvar" 
+          icon={{name: 'md-checkmark', type: 'ionicon'}}
           //onPress={() => this.login(this.state.email,this.state.password)}
           onPress={() => this.saveData()}
           style={styles.btnLogin}
-          backgroundColor='#42c2f4'/>
+          backgroundColor='#426cb4'/>
         <Text>{note}</Text>
       </View>
     );
@@ -113,7 +115,7 @@ export default class FormNote extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#130f40',
+    backgroundColor: 'white',
     justifyContent: 'flex-start',
   },
   btnLogin: {

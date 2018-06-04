@@ -1,14 +1,27 @@
 import React from 'react';
-import { Text, CameraRoll, Image, AppRegistry, StyleSheet, View, ScrollView} from 'react-native';
+import { Text, CameraRoll, Image, AppRegistry, StyleSheet, View, ScrollView, PermissionsAndroid} from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-
+import { Camera, Permissions } from 'expo';
 
 export default class uploadImage extends React.Component {
   state = {
     photos: [],
-    loadingBar: true
+    loadingBar: true,
+    hasCameraPermission: null,
+    type: Camera.Constants.Type.back,
  };
+
+  constructor(props){
+    super(props)
+  }
+
+  async componentWillMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    this.setState({ hasCameraPermission: status === 'granted' });
+  }
+
+ 
   _handleButtonPress = () => {
     CameraRoll.getPhotos({
         first: 20,
@@ -18,7 +31,7 @@ export default class uploadImage extends React.Component {
         this.setState({ photos: r.edges });
       })
       .catch((err) => {
-         //Error Loading Images
+         console.log(err.toString());
       });
     };
   render() {
@@ -27,6 +40,7 @@ export default class uploadImage extends React.Component {
         <Button title="Load Images" onPress={this._handleButtonPress} />
         <ScrollView>
           {this.state.photos.map((p, i) => {
+          console.log(p.node.image.uri);
           return (
             <Image
               key={i}

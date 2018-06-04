@@ -90,12 +90,6 @@ export default class DetailsScreen extends React.Component {
             {
               this.showLoadingBar()
             }
-            <Button 
-              title='Adicionar note'
-              backgroundColor='#f50'
-              style={styles.button}
-              onPress={() => Actions.formNote()}
-            />
         </View>
       </ScrollView>
       

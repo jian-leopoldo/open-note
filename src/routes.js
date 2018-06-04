@@ -14,10 +14,9 @@ const Routes = () => (
   <Router>
     <Scene key="root" >
         <Scene key="login" component={Login} title="Login"  hideNavBar={true}/>
-        <Tabs key='tabbar' tabs showLabel={false} tabBarPosition='bottom' activeBackgroundColor='#111' inactiveBackgroundColor='#111'>
+        <Tabs key='tabbar' tabs showLabel={false} tabBarPosition='bottom' activeBackgroundColor='#42c2f4' inactiveBackgroundColor='#111'>
           <Scene key="details" icon={IconPaper} component={DetailsScreen} title="Detalhes" hideNavBar={true}/>
           <Scene key="formNote" icon={IconAdd} component={FormNote} title="Nova Nota"/>
-          <Scene key="uploadImage" component={uploadImage} title="Upload Image"  hideNavBar={true}/>
           <Scene key="user" icon={IconPerson} component={currentUser} title="UsuarioAtual"  hideNavBar={true}/>
         </Tabs>
     </Scene>

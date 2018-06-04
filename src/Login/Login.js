@@ -4,7 +4,8 @@ import {
   AppRegistry, 
   Button, 
   StyleSheet, 
-  View, 
+  View,
+  Image,
   ActivityIndicator, 
   TextInput, 
   Text } from 'react-native';
@@ -19,7 +20,10 @@ export default class Login extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-          <Text style={styles.title}> Note App</Text>
+          <Image
+            style={styles.title}
+            source={require('../img/OpenNote_logo.png')}
+          />
         </View>
         <View style={styles.inputContainer}>
           <LoginForm />
@@ -32,7 +36,7 @@ export default class Login extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#130f40',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -42,9 +46,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    color: 'white',
-    fontSize: 30,
-    width: 160,
-    textAlign:'center'
   }
 });
