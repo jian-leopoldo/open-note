@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Text, AppRegistry, StyleSheet, View, ActivityIndicator, TextInput, Alert } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
+
 import * as firebase from "firebase";
 
 
@@ -58,7 +59,6 @@ export default class LoginForm extends React.Component {
         // Navigate to the Home page
 
     } catch (error) {
-        console.log(error.toString())
         Alert.alert("Erro ao realizar login",error.toString());
     }
 
@@ -73,7 +73,8 @@ export default class LoginForm extends React.Component {
         <FormLabel>Password</FormLabel>
         <FormInput  onChangeText={this.setPassword} secureTextEntry/>
         <Button 
-          title="Login"  
+          title="Login" 
+          icon={{name: 'md-checkmark', type: 'ionicon'}}
           //onPress={() => this.login(this.state.email,this.state.password)}
           onPress={() => Actions.details()}
           style={styles.btnLogin}

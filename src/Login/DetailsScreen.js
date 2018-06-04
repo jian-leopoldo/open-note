@@ -1,50 +1,104 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, View, TextInput, Text, Image } from 'react-native';
-import { Icon, Card, ListItem, Button } from 'react-native-elements';
+import { 
+  AppRegistry,
+  List, 
+  ListItem, 
+  StyleSheet, 
+  View, 
+  TextInput, 
+  Text, 
+  Image, 
+  FlatList,
+  ScrollView,
+  ActivityIndicator
+ } from 'react-native';
+import { Icon, Card, Button  } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-
-const users = [
-  {
-     name: 'brynn',
-     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-  },
-  {
-    name: 'Jian',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-  }
- ]
+import * as firebase from "firebase";
 
 export default class DetailsScreen extends React.Component {
+
+  state = {
+     dataSource: [],
+     loadingBar: true
+  };
+
+  constructor(props){
+    super(props)
+  }
+  
+  componentWillMount(){
+
+  }
+  componentDidMount(){
+    this.makeRequest();
+  }
+
+  makeRequest = () => {
+    var details = firebase.database().ref("/user/details");
+    details.on('value', (snapshot) => {
+      var items = [];
+      snapshot.forEach((child) => {
+        items.push({
+          title: child.val().title,
+          description: child.val().description,
+          _key: child.key
+        });
+      });
+
+      this.setState({
+        dataSource: items,
+        loadingBar: false
+      });
+
+      
+      
+    });
+   
+  }
+
+  showLoadingBar(){
+    if (this.state.loadingBar) {
+      return <ActivityIndicator size="large" color="#0000ff" />;
+    }
+    
+  }
   
   render() {
     return (
-      <View>
+      <ScrollView> 
         <View style={styles.button}>
-          <Card title="CARD WITH DIVIDER">
-            {
-              users.map((u, i) => {
+          {
+                this.state.dataSource.map((u, i) => {
                 return (
-                  <View key={i} >
-                    <Image
-                      resizeMode="cover"
-                      source={{ uri: u.avatar }}
-                    />
-                    <Text >{u.name}</Text>
-                  </View>
+
+                  <Card title={u.title} key={u._key}>
+                    <View key={u._key} >
+                      <Image
+                        resizeMode="cover"
+                        source={{ uri: u._key }}
+                      />
+                      <Text  key={u._key}>{u.description}</Text>
+                    </View>
+                  </Card>
+
                 );
               })
+          }
+          </View>
+          <View>
+            {
+              this.showLoadingBar()
             }
-          </Card>
+            <Button 
+              title='Adicionar note'
+              backgroundColor='#f50'
+              style={styles.button}
+              onPress={() => Actions.formNote()}
+            />
         </View>
-        <View>
-          <Button 
-            title='Adicionar note'
-            backgroundColor='#f50'
-            style={styles.button}
-            onPress={() => Actions.formNote()}
-          />
-        </View>
-      </View>
+      </ScrollView>
+      
     );
   }
 }
@@ -62,6 +116,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   button: {
-    marginTop: 20
+    paddingTop: 20
   }
 });

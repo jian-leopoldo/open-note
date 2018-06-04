@@ -20,6 +20,10 @@ export default class FormNote extends React.Component {
     errorMessage: '',
     note: '',
   };
+
+  componentDidMount(){
+    () => listarDados();
+  }
   
   setDescription = val => {
     this.setState({
@@ -43,19 +47,43 @@ export default class FormNote extends React.Component {
     })
   }
 
+  renderErrorMessage(){
+    if (this.state.errorMessage != ''){
+      return (
+        <FormValidationMessage>{this.state.errorMessage}</FormValidationMessage>
+      );
+    }
+  }
+
   saveData() {
 
     let userMobilePath = "/user/details";
+    if (this.state.title != "" && this.state.description != ""){
+      try {
+        firebase.database().ref(userMobilePath).push({
+          title: this.state.title,
+          description: this.state.description
+        })
+        Alert.alert("Sucesso","Nota Salva com sucesso");
+  
+      } catch (error) {
+          Alert.alert("Erro ao salvar nota",error.toString());
+      }
 
-    return firebase.database().ref(userMobilePath).push({
-        title: this.state.title,
-        description: this.state.description
-    })
+    }
+    else{
+      this.setState({
+        errorMessage: "Insira dados validos"
+      })
+    }
+    
+    
   }
 
   listarDados(){
-    var details = firebase.database().ref("/user/details/title");
+    var details = firebase.database().ref("/user/details");
     details.on('value', (snapshot) => {
+      console.log(snapshot.val());
       this.setState({note: snapshot.val()});
     });
   }
@@ -66,8 +94,10 @@ export default class FormNote extends React.Component {
       <View style={styles.container}>
         <FormLabel>Título da nota</FormLabel>
         <FormInput onChangeText={this.setTitle}/>
+        {this.renderErrorMessage()}
         <FormLabel>Descrição da nota</FormLabel>
         <FormInput  onChangeText={this.setDescription}/>
+        {this.renderErrorMessage()}
         <Button 
           title="Login"  
           //onPress={() => this.login(this.state.email,this.state.password)}
